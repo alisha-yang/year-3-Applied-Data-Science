@@ -1,0 +1,13 @@
+install.packages("dplyr") 
+install.packages("sf") 
+install.packages("curl")
+install.packages("ggmap")
+install.packages("devtools") 
+devtools::install_github("dkahle/ggmap")
+
+mydata = read.csv("100k_yellow_2015_05.csv")
+library(ggmap)
+library(tmaptools)
+map<-get_stamenmap(rbind(as.numeric(paste(geocode_OSM("Manhattan")$bbox))), zoom = 11)
+ggmap(map)
+ggmap(map) + geom_point(aes(x = pickup_longitude, y = pickup_latitude), colour="white", size = 0.01, data = mydata, alpha = .5)

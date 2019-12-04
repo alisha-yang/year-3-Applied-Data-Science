@@ -1,0 +1,5 @@
+library(ggmap)
+mydata = read.csv("100k_yellow_2015_05.csv")
+map <- get_map(location = 'Manhattan', zoom = 12,maptype = "satellite")
+plotmap <- ggmap(map) + geom_point(aes(x = pickup_longitude, y = pickup_latitude), colour="white", size = 0.01, data = mydata, alpha = .5)
+ggsave(plotmap, file = "output.png", dpi=160)
