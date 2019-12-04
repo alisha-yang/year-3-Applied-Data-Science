@@ -1,0 +1,50 @@
+---
+title: "Untitled"
+author: "Bohan Yang"
+date: "07/09/2019"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+train <- read.csv('train.csv')
+data <- read.csv('final.csv')
+test <- read.csv('test.csv')
+```
+
+
+```{r}
+t_model0 <- lm(tip_amount ~ 1, data = train)
+t_model1 <- step(t_model0, scope = ~ . + avg_speed + pickup_hour + Minimum.Temperature + Maximum.Temperature + Temperature)
+```
+
+
+```{r}
+t_model2 <- lm(tip_amount ~ (avg_speed + pickup_hour + Maximum.Temperature)^2, data = train)
+anova(t_model1, t_model2)
+```
+
+
+```{r}
+t_model3 <- step(t_model2)
+summary(t_model3)
+```
+
+```{r}
+t_model4 <- step(t_model0, scope = ~ . + (avg_speed + pickup_hour + Minimum.Temperature + Maximum.Temperature + Temperature)^2)
+```
+
+```{r}
+deviance(t_model3) # residual sum of squares
+deviance(t_model3)/t_model3$df.residual # sample variance
+confint(t_model3)
+```
+
+
+```{r}
+plot(t_model3)
+```
+
